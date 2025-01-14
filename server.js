@@ -90,7 +90,7 @@ server.post(`/recipes/addrecipe`, verifyToken, (req, res) => {
     const quantity = parseInt(req.body.quantity, 10)
     let query = `INSERT INTO RECIPE (TITLE,DESCRIPTION,INGREDIENTS,INSTRUCTIONS,IMAGE,CATEGORY) VALUES
     (?,?,?,?,?,?)`
-    db.run(query, [title, description, ingredients, instructions, Image, category ], (err) => {
+    db.run(query, [title, description, ingredients, instructions, image, category ], (err) => {
         if (err) {
             console.log(err)
             return res.send(err)
@@ -102,11 +102,11 @@ server.post(`/recipes/addrecipe`, verifyToken, (req, res) => {
 
 })
 
-server.get(`/flights`, verifyToken, (req, res) => {
+server.get(`/recipes`, verifyToken, (req, res) => {
     const isAdmin = req.userDetails.isAdmin;
     if (isAdmin !== 1)
         return res.status(403).send("you are not an admin")
-    const query = `SELECT * FROM FLIGHT`
+    const query = `SELECT * FROM RECIPES`
     db.all(query, (err, rows) => {
         if (err) {
             console.log(err)
@@ -118,15 +118,15 @@ server.get(`/flights`, verifyToken, (req, res) => {
     })
 })
 
-server.get(`/flights/search/:id`, (req, res) => {
-    const query = `SELECT * FROM FLIGHT WHERE ID=${req.params.id}`
+server.get(`/recipes/search/:id`, (req, res) => {
+    const query = `SELECT * FROM RECIPES WHERE ID=${req.params.id}`
     db.get(query, (err, row) => {
         if (err) {
             console.log(err)
             return res.send(err)
         }
         else if (!row)
-            return res.send(`flight with id ${req.params.id} not found`)
+            return res.send(`recipe with id ${req.params.id} not found`)
         else
             return res.send(row)
     })
