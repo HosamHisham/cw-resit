@@ -1,5 +1,5 @@
 const sqlite= require('sqlite3')
-const db= new sqlite.Database('travel.db')
+const db= new sqlite.Database('recipes.db')
 db.run(`INSERT INTO USER (name,email,password,isadmin) VALUES ('admin','admin','admin',1)`,(err)=>{
     if(err)
         console.log(err.message)
