@@ -8,12 +8,16 @@ const cookieParser = require('cookie-parser');
 const server = express()
 const port = 555
 const secret_key = 'DdsdsdKKFDDFDdvfddvxvc4dsdvdsvdb'
+
 server.use(cors({
-    origin:"http://localhost:3000",
+    origin:"http://localhost:5000",
     credentials:true
 }))
+
 server.use(express.json())
+
 server.use(cookieParser())
+
 const generateToken = (id, isAdmin) => {
     return jwt.sign({ id, isAdmin }, secret_key, { expiresIn: '1h' })
 }
@@ -29,6 +33,7 @@ const verifyToken = (req, res, next) => {
         next()
     })
 }
+
 server.post('/user/login', (req, res) => {
     const email = req.body.email
     const password = req.body.password
@@ -82,21 +87,18 @@ server.post(`/recipes/addrecipe`, verifyToken, (req, res) => {
     if (isAdmin !== 1)
         return res.status(403).send("you are not an admin")
     const title = req.body.title
-    const description = req.body.description
     const ingredients = req.body.ingredients
     const instructions = req.body.instructions
-    const image = req.body.image
-    const category = req.body.category
     const quantity = parseInt(req.body.quantity, 10)
-    let query = `INSERT INTO RECIPE (TITLE,DESCRIPTION,INGREDIENTS,INSTRUCTIONS,IMAGE,CATEGORY) VALUES
-    (?,?,?,?,?,?)`
-    db.run(query, [title, description, ingredients, instructions, image, category ], (err) => {
+    let query = `INSERT INTO RECIPE (TITLE,,INGREDIENTS,INSTRUCTIONS,QUANTITY) VALUES
+    (?,?,?,?)`
+    db.run(query, [title, , ingredients, instructions, , quantity ], (err) => {
         if (err) {
             console.log(err)
             return res.send(err)
         }
         else {
-            return res.send(`flight added successfully`)
+            return res.send(`recipe added successfully`)
         }
     })
 
@@ -132,11 +134,11 @@ server.get(`/recipes/search/:id`, (req, res) => {
     })
 })
 
-server.put(`/flights/edit/:id/:quantity`, verifyToken, (req, res) => {
+server.put(`/recipes/edit/:id/:quantity`, verifyToken, (req, res) => {
     const isAdmin = req.userDetails.isAdmin;
     if (isAdmin !== 1)
         return res.status(403).send("you are not an admin")
-    const query = `UPDATE FLIGHT SET QUANTITY=${parseInt(req.params.quantity, 10)}
+    const query = `UPDATE RECIPES SET QUANTITY=${parseInt(req.params.quantity, 10)}
     WHERE ID=${req.params.id}`
 
     db.run(query, (err) => {
@@ -145,16 +147,14 @@ server.put(`/flights/edit/:id/:quantity`, verifyToken, (req, res) => {
             return res.send(err)
         }
         else {
-            return res.send(`flight updated successfully`)
+            return res.send(`recipe updated successfully`)
         }
     })
 })
 
-server.get(`/flights/search`, (req, res) => {
-    let home = req.query.home
-    let away = req.query.away
-    let date = req.query.date
-    let query = `SELECT * FROM FLIGHT WHERE QUANTITY>0`
+server.get(`/recipes/search`, (req, res) => {
+    let title = req.query.title
+    let query = `SELECT * FROM RECIPES WHERE QUANTITY>0`
     if (home)
         query += ` AND HOME='${home}'`
     if (away)
