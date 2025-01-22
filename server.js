@@ -155,12 +155,8 @@ server.put(`/recipes/edit/:id/:quantity`, verifyToken, (req, res) => {
 server.get(`/recipes/search`, (req, res) => {
     let title = req.query.title
     let query = `SELECT * FROM RECIPES WHERE QUANTITY>0`
-    if (home)
-        query += ` AND HOME='${home}'`
-    if (away)
-        query += ` AND AWAY='${away}'`
-    if (date)
-        query += ` AND DATE='${date}'`
+    if (title)
+        query += ` AND TITLE='${title}'`
 
     db.all(query, (err, rows) => {
         if (err) {
@@ -174,8 +170,9 @@ server.get(`/recipes/search`, (req, res) => {
 
 })
 
+/*
 server.put(`/book`, verifyToken, (req, res) => {
-    const isAdmin = req.userDetails.isAdmin;
+   const isAdmin = req.userDetails.isAdmin;
     if (isAdmin !== 1)
         return res.status(403).send("you are not an admin")
     let home = req.query.home
@@ -221,6 +218,7 @@ server.put(`/book`, verifyToken, (req, res) => {
     }
     )
 })
+*/
 
 server.listen(port, () => {
     console.log(`server started at port ${port}`)
