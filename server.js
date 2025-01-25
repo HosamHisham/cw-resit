@@ -6,13 +6,16 @@ const db_access = require('./Db.js')
 const db = db_access.db
 const cookieParser = require('cookie-parser');
 const server = express()
-const port = 555
+const hostname = '127.0.0.1'
+const port = 5000
 const secret_key = 'DdsdsdKKFDDFDdvfddvxvc4dsdvdsvdb'
 
+
 server.use(cors({
-    origin:"http://localhost:5000",
+    origin:"http://localhost:3000",
     credentials:true
 }))
+
 
 server.use(express.json())
 
@@ -219,23 +222,21 @@ server.put(`/book`, verifyToken, (req, res) => {
 })
 */
 
-server.listen(port, () => {
-    console.log(`server started at port ${port}`)
+server.listen(port, hostname, () => {
+    console.log(`Server running at http://${hostname}:${port}/`);
     db.serialize(() => {
         db.run(db_access.createUserTable, (err) => {
             if (err)
                 console.log("error creating user table " + err)
         });
-        db.run(db_access.createFlightTable, (err) => {
+        db.run(db_access.createRecipeTable, (err) => {
             if (err)
-                console.log("error creating flight table " + err)
-        });
-        db.run(db_access.createBookingTable, (err) => {
-            if (err)
-                console.log("error creating booking table " + err)
+                console.log("error creating recipe table " + err)
         });
     })
+});
 
+setInterval (()=> {
+   console.log('heartbeat: server is still running...');
 
-
-})
+}, 2500);
