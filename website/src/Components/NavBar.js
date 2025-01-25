@@ -2,18 +2,18 @@ import './NavBar.css'
 const NavBar=({navigate})=>{
     return(
         <nav>
-            <div clasName="logo" onClick={()=>{
+            <div className="logo" onClick={()=>{
                 navigate('home')
             }}>
             cook book
         </div>
         <div>
             <ul>
-                <li onCick={()=>{
-                    navigate('login')
+                <li onClick={()=>{
+                    navigate('login');
                 }}>login</li>
                 <li onClick={()=>{
-                    navigate('register')
+                    navigate('register');
                 }}>register</li>
             </ul>
         </div>

@@ -1,12 +1,22 @@
 import React from 'react';
 import './App.css';
+import LoginForm from './Components/LoginForm';
+import Main from './Components/Main';
+import Home from './Components/Home';
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 
-function App() {
+
+
+const App= () => {
   return (
-    <div className="App">
-      <h1>recipe management</h1>
-  
-    </div>
+    <router>
+      <routes>
+        <route path="/" element={<Main />} />
+        <route path="/home" element={<Home />} />
+        <route path="/login" element={<LoginForm />} /> 
+      </routes>
+    </router>
+
   );
 }
 
