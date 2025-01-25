@@ -89,10 +89,9 @@ server.post(`/recipes/addrecipe`, verifyToken, (req, res) => {
     const title = req.body.title
     const ingredients = req.body.ingredients
     const instructions = req.body.instructions
-    const quantity = parseInt(req.body.quantity, 10)
-    let query = `INSERT INTO RECIPE (TITLE,,INGREDIENTS,INSTRUCTIONS,QUANTITY) VALUES
-    (?,?,?,?)`
-    db.run(query, [title, , ingredients, instructions, , quantity ], (err) => {
+    let query = `INSERT INTO RECIPE (TITLE,INGREDIENTS,INSTRUCTIONS) VALUES
+    (?,?,?)`
+    db.run(query, [title, , ingredients, instructions ], (err) => {
         if (err) {
             console.log(err)
             return res.send(err)
@@ -154,7 +153,7 @@ server.put(`/recipes/edit/:id/:quantity`, verifyToken, (req, res) => {
 
 server.get(`/recipes/search`, (req, res) => {
     let title = req.query.title
-    let query = `SELECT * FROM RECIPES WHERE QUANTITY>0`
+    let query = `SELECT * FROM RECIPES WHERE 1=1`
     if (title)
         query += ` AND TITLE='${title}'`
 
