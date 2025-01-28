@@ -1,13 +1,13 @@
 import React from 'react';
+import {useState} from 'react';
 
 
 const RegistrationForm = () => {
-    let name = '';
-    let email = '';
-    let password = '';
-    let isAdmin = false;
-    let message = '';
-    
+    const [name, setName] = useState ('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [isAdmin, setIsAdmin] = useState(false);
+    const [message, setMessage] =useState('');
 
     const registerUser = () => {
         fetch ('http://localhost;5000/user/register', {
@@ -35,22 +35,22 @@ const RegistrationForm = () => {
                 <input
                 type="text"
                 placeholder = "Name"
-                onChange={(e) => (name = e.target.value)}
+                onChange={(e) => setName = (e.target.value)}
                 required
             />
             <br />
-            <input
-            type = "email"
-            placeholder = "Email"
-            onchange = {(e) => (email = e.target.value)}
-            required
+                <input
+                type = "email"
+                placeholder = "Email"
+                onChange = {(e) => setEmail = (e.target.value)}
+                required
             />
             <br />
-            <input 
-            type = "password"
-            placeholder = "Password"
-            onChange = {(e) => (password = e.target.value)}
-            required
+                <input 
+                type = "password"
+                placeholder = "Password"
+                onChange = {(e) => setPassword = (e.target.value)}
+                required
             />
             <br />
             <button type="button" onClick={registerUser}>
