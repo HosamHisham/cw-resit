@@ -10,7 +10,7 @@ const RegistrationForm = () => {
     const [message, setMessage] =useState('');
 
     const registerUser = () => {
-        fetch ('http://localhost;5000/user/register', {
+        fetch ('http://localhost:5000/user/register', {
             method: 'POST',
             headers: {'Content-Type': 'application/json' },
             body: JSON.stringify({ name, email, password, isAdmin}),
@@ -19,12 +19,12 @@ const RegistrationForm = () => {
                 if(!response.ok) {
                     throw new Error('Registration failed');
                 }
-                message = 'Registration successful';
-                alert(message);
+                setMessage = 'Registration successful';
+                alert('Registartion Succesful');
             })
             .catch((error) => {
-                message = error.message;
-                alert(message);
+                setMessage(error.message);
+                alert(error.message);
             });
         
     };
@@ -35,21 +35,21 @@ const RegistrationForm = () => {
                 <input
                 type="text"
                 placeholder = "Name"
-                onChange={(e) => setName = (e.target.value)}
+                onChange={(e) => setName(e.target.value)}
                 required
             />
             <br />
                 <input
                 type = "email"
                 placeholder = "Email"
-                onChange = {(e) => setEmail = (e.target.value)}
+                onChange = {(e) => setEmail(e.target.value)}
                 required
             />
             <br />
                 <input 
                 type = "password"
                 placeholder = "Password"
-                onChange = {(e) => setPassword = (e.target.value)}
+                onChange = {(e) => setPassword(e.target.value)}
                 required
             />
             <br />
