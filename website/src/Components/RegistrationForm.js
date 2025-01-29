@@ -14,20 +14,21 @@ const RegistrationForm = () => {
             method: 'POST',
             headers: {'Content-Type': 'application/json' },
             body: JSON.stringify({ name, email, password, isAdmin}),
+
         })
-            .then((response) => {
-                if(!response.ok) {
-                    throw new Error('Registration failed');
-                }
-                setMessage = 'Registration successful';
-                alert('Registartion Succesful');
-            })
-            .catch((error) => {
-                setMessage(error.message);
-                alert(error.message);
-            });
-        
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error('Registration Failed');
+            }
+            setMessage('Registration Successful');
+            alert('registration successful');
+        })
+        .catch((error) => {
+            setMessage(error.message);
+            alert(error.message);
+        });
     };
+
     return (
         <div className="form-selection">
             <h3>User Registration</h3>
