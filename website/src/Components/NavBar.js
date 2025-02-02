@@ -1,9 +1,25 @@
 import './NavBar.css'
 import React from 'react';
-import {useNavigate} from 'react-router-dom';
+import {useState, useEffect} from 'react';
+import {useNavigate, useLocation} from 'react-router-dom';
 
 const NavBar=() => {
     const navigate = useNavigate();
+    const location = useLocation();
+
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    useEffect(() => {
+        const userExists = localStorage.getItem('user') !== null;
+        setIsLoggedIn(userExists);
+    }, [location.pathname]);
+
+
+    const handleLogout = () => {
+        localStorage.removeItem('user');
+        setIsLoggedIn(false);
+        navigate('/login')
+    };
 
     return (
         <nav>
@@ -12,8 +28,14 @@ const NavBar=() => {
             </div>
             <div>
                 <ul>
+                    {isLoggedIn ? (
+                        <li onClick={handleLogout}>Logout</li>
+                    ) : (
+                    <>
                     <li onClick={() => navigate('/login')}>login</li>
                     <li onClick={() => navigate('/register')}>register</li>
+                    </>
+                    )}
                 </ul>
             </div>
         </nav>
