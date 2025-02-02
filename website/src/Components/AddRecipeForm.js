@@ -18,8 +18,47 @@ const AddRecipeForm = () => {
         })
         .then((response) => {
             if(!response.ok) {
-                throw new Error(`failed to add recipe `)
+                throw new Error(`failed to add recipe. status code ${response.status}, message ${JSON.stringify(response.text())}`);
             }
+            setMessage('recipe added successfully');
+            alert('recipe added successfully');
         })
-    }
-}
+        .catch((error) => {
+            setMessage (`error: ${error.message}`);
+            alert(error.message);
+        });
+    };
+    return (
+        <div className = "form-selection">
+            <h3>add recipe</h3>
+            <form>
+                <input
+                type="text"
+                placeholder="title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                required
+                /><br />
+                <input
+                type="text"
+                placeholder="description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                required
+                /><br />
+                <input
+                type="text"
+                value={ingredients}
+                placeholder="ingredients"
+                onChange={(e) => setIngredients(e.target.value)}
+                required
+                /><br />
+                <button type="button" onCllick={addRecipe}>Add recipe</button>
+            </form>
+
+            {message && <p>{message}</p>}
+        </div>
+    );
+};
+
+export default AddRecipeForm;

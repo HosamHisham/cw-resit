@@ -25,7 +25,7 @@ const LoginForm = () => {
         }
         const userData=await response.json ();
         if(userData.admin===1) 
-            navigate('/home');
+            navigate('/add-recipe');
         else
         navigate('/home');
 }
