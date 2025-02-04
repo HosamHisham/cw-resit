@@ -24,10 +24,16 @@ const LoginForm = () => {
             throw new Error('Invalid credentials');
         }
         const userData=await response.json ();
-        if(userData.admin===1) 
+        localStorage.setItem('user', JSON.stringify({
+            name: userData.name,
+            admin: userData.admin
+        }));
+
+        if(userData.isAdmin === 1) {
             navigate('/add-recipe');
-        else
+        } else {
         navigate('/home');
+        }
 }
 
         catch(error){

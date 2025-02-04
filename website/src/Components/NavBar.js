@@ -6,12 +6,11 @@ import {useNavigate, useLocation} from 'react-router-dom';
 const NavBar=() => {
     const navigate = useNavigate();
     const location = useLocation();
-
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     useEffect(() => {
-        const userExists = localStorage.getItem('user') !== null;
-        setIsLoggedIn(userExists);
+        const user = localStorage.getItem('user')
+        setIsLoggedIn(!!user);
     }, [location.pathname]);
 
 

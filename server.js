@@ -51,15 +51,15 @@ server.post('/user/login', (req, res) => {
             else {
                 let userID = row.ID
                 let isAdmin = row.ISADMIN
-                const token = generateToken(userID, isAdmin)
+                const token = generateToken(row.ID, row.ISADMIN)
 
                 res.cookie('authToken', token, {
                     httpOnly: true,
                     sameSite: 'none',
                     secure:true,
-                    expiresIn: '1h'
+                    maxAge: 3600000
                 })
-                return res.status(200).json({ id: userID, admin: isAdmin })
+                return res.status(200).json({ id: row.ID, admin: row.ISADMIN, name: row.NAME})
             }
         })
     })
@@ -69,11 +69,12 @@ server.post(`/user/register`, (req, res) => {
     const name = req.body.name
     const email = req.body.email
     const password = req.body.password
+    const isadmin = 0;
     bcrypt.hash(password, 10, (err, hashedPassword) => {
         if (err) {
             return res.status(500).send('error hashing password')
         }
-        db.run(`INSERT INTO USER (name,email,password,isadmin) VALUES (?,?,?,?)`, [name, email, hashedPassword, 0], (err) => {
+        db.run(`INSERT INTO USER (name,email,password,isadmin) VALUES (?,?,?,?)`, [name, email, hashedPassword, isadmin], (err) => {
             if (err) {
 
                 return res.status(401).send(err)
