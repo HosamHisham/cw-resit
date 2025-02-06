@@ -13,7 +13,7 @@ const secret_key = 'DdsdsdKKFDDFDdvfddvxvc4dsdvdsvdb'
 
 server.use(cors({
     origin:"http://localhost:3000",
-    credentials:true
+    credentials:true,
 }))
 
 
@@ -21,21 +21,22 @@ server.use(express.json())
 
 server.use(cookieParser())
 
-const generateToken = (id, isAdmin) => {
-    return jwt.sign({ id, isAdmin }, secret_key, { expiresIn: '1h' })
+const generateToken = (userID, isAdmin) => {
+    return jwt.sign({ id: userID, idAdmin: isAdmin }, secret_key, { expiresIn: '1h' })
 }
 const verifyToken = (req, res, next) => {
     const token = req.cookies.authToken
     if (!token)
-        return res.status(401).send('unauthorized')
+        return res.status(401).send('unauthorized');
+
     jwt.verify(token, secret_key, (err, details) => {
         if (err)
             return res.status(403).send('invalid or expired token')
         req.userDetails = details
 
-        next()
-    })
-}
+        next();
+    });
+};
 
 server.post('/user/login', (req, res) => {
     const email = req.body.email
@@ -51,7 +52,7 @@ server.post('/user/login', (req, res) => {
             else {
                 let userID = row.ID
                 let isAdmin = row.ISADMIN
-                const token = generateToken(row.ID, row.ISADMIN)
+                const token = generateToken(userID, isAdmin)
 
                 res.cookie('authToken', token, {
                     httpOnly: true,
@@ -59,7 +60,7 @@ server.post('/user/login', (req, res) => {
                     secure:true,
                     maxAge: 3600000
                 })
-                return res.status(200).json({ id: row.ID, admin: row.ISADMIN, name: row.NAME})
+                return res.status(200).json({ id: userID, admin: isAdmin, name: row.NAME})
             }
         })
     })
@@ -69,7 +70,7 @@ server.post(`/user/register`, (req, res) => {
     const name = req.body.name
     const email = req.body.email
     const password = req.body.password
-    const isadmin = 0;
+    const isadmin = req.body.isAdmin || 0;
     bcrypt.hash(password, 10, (err, hashedPassword) => {
         if (err) {
             return res.status(500).send('error hashing password')
@@ -92,10 +93,10 @@ server.post(`/recipes/addrecipe`, verifyToken, (req, res) => {
         return res.status(403).send("you are not an admin")
     const title = req.body.title
     const ingredients = req.body.ingredients
-    const instructions = req.body.instructions
-    let query = `INSERT INTO RECIPE (TITLE,INGREDIENTS,INSTRUCTIONS) VALUES
+    const description = req.body.description
+    let query = `INSERT INTO RECIPE (TITLE,INGREDIENTS, DESCRIPTION) VALUES
     (?,?,?)`
-    db.run(query, [title, , ingredients, instructions ], (err) => {
+    db.run(query, [title, ingredients, description ], (err) => {
         if (err) {
             console.log(err)
             return res.send(err)

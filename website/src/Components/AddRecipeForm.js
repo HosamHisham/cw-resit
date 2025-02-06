@@ -11,10 +11,10 @@ const AddRecipeForm = () => {
         fetch('http://localhost:5000/recipes/addrecipe', {
             method: 'POST',
             headers : {
-                'Conetnt-Type': 'application/json',
+                'Content-Type': 'application/json',
             },
-            bodt: JSON.stringify({title, description, ingredients}),
-            credentials:"incude"
+            body: JSON.stringify({title, description, ingredients}),
+            credentials: 'include'
         })
         .then((response) => {
             if(!response.ok) {
@@ -53,7 +53,7 @@ const AddRecipeForm = () => {
                 onChange={(e) => setIngredients(e.target.value)}
                 required
                 /><br />
-                <button type="button" onCllick={addRecipe}>Add recipe</button>
+                <button type="button" onClick={addRecipe}>Add recipe</button>
             </form>
 
             {message && <p>{message}</p>}
