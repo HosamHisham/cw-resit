@@ -13,7 +13,7 @@ const secret_key = 'DdsdsdKKFDDFDdvfddvxvc4dsdvdsvdb'
 
 server.use(cors({
     origin:"http://localhost:3000",
-    credentials:true,
+    credentials: true
 }))
 
 
@@ -22,12 +22,13 @@ server.use(express.json())
 server.use(cookieParser())
 
 const generateToken = (userID, isAdmin) => {
-    return jwt.sign({ id: userID, idAdmin: isAdmin }, secret_key, { expiresIn: '1h' })
+    return jwt.sign({ id: userID, isAdmin: isAdmin }, secret_key, { expiresIn: '1h' })
 }
 const verifyToken = (req, res, next) => {
+    console.log("cookies recieved:", req.cookies);
     const token = req.cookies.authToken
     if (!token)
-        return res.status(401).send('unauthorized');
+        return res.status(401).send('unauthorized: no token');
 
     jwt.verify(token, secret_key, (err, details) => {
         if (err)
@@ -56,8 +57,8 @@ server.post('/user/login', (req, res) => {
 
                 res.cookie('authToken', token, {
                     httpOnly: true,
-                    sameSite: 'none',
-                    secure:true,
+                    sameSite: "lax",
+                    secure:false,
                     maxAge: 3600000
                 })
                 return res.status(200).json({ id: userID, admin: isAdmin, name: row.NAME})
@@ -94,9 +95,8 @@ server.post(`/recipes/addrecipe`, verifyToken, (req, res) => {
     const title = req.body.title
     const ingredients = req.body.ingredients
     const description = req.body.description
-    let query = `INSERT INTO RECIPE (TITLE,INGREDIENTS, DESCRIPTION) VALUES
-    (?,?,?)`
-    db.run(query, [title, ingredients, description ], (err) => {
+    db.run(`INSERT INTO RECIPES (title, ingredients, description) VALUES
+    (?,?,?)`, [title, ingredients, description ], (err) => {
         if (err) {
             console.log(err)
             return res.send(err)

@@ -11,7 +11,7 @@ const AddRecipeForm = () => {
         fetch('http://localhost:5000/recipes/addrecipe', {
             method: 'POST',
             headers : {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({title, description, ingredients}),
             credentials: 'include'
