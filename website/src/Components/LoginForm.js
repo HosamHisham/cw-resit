@@ -1,6 +1,7 @@
 import React from 'react';
 import {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
+import './AuthForm.css';
 
 
 
@@ -34,7 +35,7 @@ const LoginForm = () => {
         if(userData.admin === 1) {
             navigate('/add-recipe');
         } else {
-        navigate('/home');
+        navigate('/');
         }
 }
 

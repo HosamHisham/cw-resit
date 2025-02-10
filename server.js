@@ -109,9 +109,9 @@ server.post(`/recipes/addrecipe`, verifyToken, (req, res) => {
 })
 
 server.get(`/recipes`, verifyToken, (req, res) => {
-    const isAdmin = req.userDetails.isAdmin;
+    /*const isAdmin = req.userDetails.isAdmin;
     if (isAdmin !== 1)
-        return res.status(403).send("you are not an admin")
+        return res.status(403).send("you are not an admin")*/
     const query = `SELECT * FROM RECIPES`
     db.all(query, (err, rows) => {
         if (err) {
@@ -138,91 +138,8 @@ server.get(`/recipes/search/:id`, (req, res) => {
     })
 })
 
-server.put(`/recipes/edit/:id/:quantity`, verifyToken, (req, res) => {
-    const isAdmin = req.userDetails.isAdmin;
-    if (isAdmin !== 1)
-        return res.status(403).send("you are not an admin")
-    const query = `UPDATE RECIPES SET QUANTITY=${parseInt(req.params.quantity, 10)}
-    WHERE ID=${req.params.id}`
 
-    db.run(query, (err) => {
-        if (err) {
-            console.log(err)
-            return res.send(err)
-        }
-        else {
-            return res.send(`recipe updated successfully`)
-        }
-    })
-})
 
-server.get(`/recipes/search`, (req, res) => {
-    let title = req.query.title
-    let query = `SELECT * FROM RECIPES WHERE 1=1`
-    if (title)
-        query += ` AND TITLE='${title}'`
-
-    db.all(query, (err, rows) => {
-        if (err) {
-            console.log(err)
-            return res.send(err)
-        }
-        else {
-            return res.json(rows)
-        }
-    })
-
-})
-
-/*
-server.put(`/book`, verifyToken, (req, res) => {
-   const isAdmin = req.userDetails.isAdmin;
-    if (isAdmin !== 1)
-        return res.status(403).send("you are not an admin")
-    let home = req.query.home
-    let away = req.query.away
-    let date = req.query.date
-    let query = `SELECT * FROM FLIGHT WHERE HOME='${home}'
-    AND AWAY='${away}' AND DATE='${date}'`
-
-    db.get(query, (err, row) => {
-        if (err) {
-            console.log(err)
-            return res.send(err)
-        }
-        else {
-
-            let flightID = row.ID
-            let userID = req.body.userID
-            let query2 = `INSERT INTO BOOKING (USER_ID,FLIGHT_ID) VALUES (${parseInt(userID, 10)},${flightID})`
-            console.log(query2)
-            db.run(query2, (err) => {
-                if (err) {
-                    console.log(err)
-                    return res.send(err)
-                }
-                else {
-
-                    let quantity = parseInt(row.QUANTITY, 10)
-                    quantity = quantity - 1
-                    query = `UPDATE FLIGHT SET QUANTITY=${quantity} WHERE ID=${flightID}`
-                    console.log(query)
-                    db.run(query, (err) => {
-                        if (err) {
-                            console.log(err)
-                            return res.send(err)
-                        }
-                        else
-                            res.send(`booked successfully`)
-                    })
-                }
-
-            })
-        }
-    }
-    )
-})
-*/
 
 server.listen(port, hostname, () => {
     console.log(`Server running at http://${hostname}:${port}/`);

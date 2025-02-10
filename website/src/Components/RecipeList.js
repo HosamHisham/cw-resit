@@ -23,16 +23,12 @@ const RecipeList = () => {
     };
 
     useEffect(() => {
-        const fetchRecipes = async () => {
              getALLRecipes();
-        };
-        fetchRecipes();
     }, []);
 
     return (
         <div className="form-section">
-            <h3>View All Recipes</h3>
-            <button onClick={getALLRecipes}>Get Recipes</button>
+            <h3>All Recipes</h3>
             <ul>
                 {recipes.map((recipe) => (
                     <li key={recipe.ID}>

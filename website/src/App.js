@@ -19,7 +19,6 @@ const App= () => {
       <NavBar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/home" element={<Home />} />
         <Route path="/login" element={<LoginForm />} /> 
         <Route path="/register" element={<RegistrationForm />} />
         <Route path="/add-recipe" element={<AddRecipeForm />} />

@@ -22,7 +22,7 @@ const NavBar=() => {
 
     return (
         <nav>
-            <div className="logo" onClick={() => navigate ('/home')}>
+            <div className="logo" onClick={() => navigate ('/')}>
                 cook book
             </div>
             <div>

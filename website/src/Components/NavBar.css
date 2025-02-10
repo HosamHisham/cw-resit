@@ -1,7 +1,7 @@
 nav{
     display: flex;
-    background-color: black;
-    color:white;
+    background-color: rgb(197, 15, 15);
+    color:rgb(248, 244, 244);
     justify-content: space-between;
     align-items: center;
 }

@@ -1,5 +1,6 @@
 import React from 'react';
 import {useState} from 'react';
+import './AuthForm.css';
 
 
 const RegistrationForm = () => {
@@ -30,7 +31,7 @@ const RegistrationForm = () => {
     };
 
     return (
-        <div className="form-selection">
+        <div className="form-section">
             <h3>User Registration</h3>
             <form>
                 <input
